@@ -1,0 +1,7 @@
+Mongo
+- Open Soure- SQL Database
+- Document Oriented
+- Great for unstructured data, especially when you have a lot of it.
+
+*In Mongo DOCUMENTS are stored in COLLECTIONS which are stored in DATABASES.
+
