@@ -4,4 +4,63 @@ Mongo
 - Great for unstructured data, especially when you have a lot of it.
 
 *In Mongo DOCUMENTS are stored in COLLECTIONS which are stored in DATABASES.
+    MongoDB is document oriented
+    
+    Each DOCUMENT in a COLLECTION exists independently and they can have different fields
+    which is referred to as a "dynamic schema"
+    
+    DOCUMENTS are just JSON like OBJECTS.  They consist of filled value pairs
+        {
+            "name": "invisibility",
+            "vendor": "kettlecooked"
+            }
 
+RELATIONAL VERSUS DOCUMENTS ORIENTED
+
+- Relational Database Management Systems save data in rows within tables
+
+***WE CAN ACCESS MONGODB THROUGH THE TERMINAL APPLICATION***
+    **all instances of mongo come with a command line app called THE SHELL (a js interpreter
+    that lets us write js code)**
+    
+        var potion = 
+        {   "name": "invisibility",
+            "vendor": "kettlecooked"
+            }
+            
+            
+use reviews - switches to use the database and creates it if it doesnt exist when we write to it.
+- reviews being the name of the database as an example
+
+db - checks which database we're currently using
+
+help - type this if I forget a command and it will give me a list of helpful commands.
+
+show dbs - gives list of databases and their names and sizes
+
+TO SAVE A DOCUMENT INTO A COLLECTION AND THEN SAVE IT TO THE DATABASE:
+
+db.potions.insert(
+{"name": "invisibility",
+ "vendor": "kettlecooked"
+     })
+     
+*Note for above code.  
+    Whenever you want to interact with the database, use db first, then after
+    you'd write the name of the document, then insert.  
+    If the collection doesn't exist yet, it will automatically be created
+
+You will receive a WriteResult back which lets you know if you succeeded inserting the
+documents.  It will look like this:
+
+WriteResult({ "ninserted": 1)}    ----this shows you successfully inserted 1 document
+        
+
+TO FIND A DOCUMENT IN THE DATABASE
+
+db.potions.find()
+
+Even if you have no parameters always end it in parenthesis like in code above.
+
+MongoDB requires that each document has a unique idea.  If we don't specify one it 
+automatically assigns one for us
