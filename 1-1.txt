@@ -56,11 +56,14 @@ documents.  It will look like this:
 WriteResult({ "ninserted": 1)}    ----this shows you successfully inserted 1 document
         
 
-TO FIND A DOCUMENT IN THE DATABASE
+TO FIND DOCUMENTS IN THE DATABASE OF THAT COLLECTION
 
 db.potions.find()
 
 Even if you have no parameters always end it in parenthesis like in code above.
 
-MongoDB requires that each document has a unique idea.  If we don't specify one it 
+MongoDB requires that each document has a unique id.  If we don't specify one it 
 automatically assigns one for us
+
+
+
