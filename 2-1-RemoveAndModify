@@ -1,0 +1,7 @@
+DELETE A SINGLE DOCUMENT
+
+db.potions.remove(
+{"name": "Love"}
+)
+
+which will give us a WriteResult({"nRemoved": 1})
