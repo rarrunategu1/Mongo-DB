@@ -1,0 +1,93 @@
+DELETE A SINGLE DOCUMENT
+
+db.potions.remove(
+{"name": "Love"}
+)
+
+which will give us a WriteResult({"nRemoved": 1})
+
+DELETE MULTIPLE DOCUMENTS
+
+db.potions.remove (
+{"vendor": "Kettlecooked"})
+
+will remove all with same vendor or you can do the following to delete them all
+
+remove()
+
+UPDATING A DOCUMENT
+
+db.potions.update(
+{"name": "Love"},   ----Query Parameter
+{"$set": {"price": 3.99}}    -----Update Parameter always begin with $
+
+This updates the price in the document but only updates
+the first matching document
+
+WriteResult will return 
+
+WriteResult({
+                "nMatched": 1,   --number of docs matched
+                "nUpserted": 0,  --number of docs created because of the update
+                "nModified": 1   --number of docs modified
+                })
+                
+UPDATE WITHOUT AN OPERATOR
+
+This is great for importing or overwriting data!!
+
+db.potions.update(
+{"name": "Love"},
+{"price": 3.99})
+
+This results in a complete replacedment of our matched document
+so the document that matches "name" Love will only have info that says
+"price" 3.99
+
+UPDATING MULTIPLE DOCUMENTS
+
+db.potions.update(
+{"vendor": "KC"},
+{"$set": {"vendor": "Kettlecooked"}})
+
+This will only update the first matching document
+
+db.potions.update(
+{"vendor": "KC"},
+{"$set": {"vendor": "Kettlecooked"}},
+{"multi": true}
+
+Adding multi allows it to perform the update on all matching documents
+
+RECORDNG POTION VIEWS
+
+Whenever user clicks more info on certain potion we want to created
+log document with the potion name in account so we can store it in the logs collection
+
+Whenever the user clicks we'll update the log document with a count increment by 1
+
+"count": 1
+
+UPDATE A DOCUMENT'S COUNT
+
+db.logs.update(
+{"potion": "Shrinking"},
+{$inc": {"count": 1}})  ----will update by a positive or negative value
+
+if the document doesn't exist you can create it with upsert
+
+db.logs.update(
+{"potion": "Shrinking"},
+{$inc": {"count": 1}},  ----will update by a positive or negative value
+{"upsert": true}
+
+
+
+
+
+
+
+
+
+
+
