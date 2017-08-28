@@ -1,0 +1,108 @@
+We can assign document ID's but it's better to let Mongo handle that so it's 
+certain a unique id is given every time.
+
+db.potions.find()
+{   "_id": ObjectId("kdh124549u9u9808yoihu09"),
+    "name": "Invisibility",
+    "vendor": "kettlecooked"
+            }
+
+WE CAN USE THE FIND METHOD TO QUERY FOR A SPECIFIC POTION
+
+db.potions.find ({"name": "Invisibility"})
+
+The section {"name": "Invisibility"} in the find method is referred
+to as a THEORY OF EQUALITY.
+
+**Find will return that entire document so it can return multiple documents**
+* Queries are aslo case sensitive so if you're looking for 
+    {"name": "Invisibility"} make sure the I is capital or not
+    depending on what you're searching for*
+    
+ DOCUMENTS ARE JSON LIKE OBJECTS
+ 
+ saved in a format called bson which is built upon json so we can
+ store values in the same ways:
+ 
+ strings
+ numbers
+ booleans
+ arrays
+ objects
+ null
+ 
+ but also
+ 
+ ObjectId
+ Date  ---> ISODate(...)  
+ 
+ BUILDING OUT OUR POTIONS
+ 
+ Add the price, score, tryDate, ingredients
+ 
+ {   "_id": ObjectId("kdh124549u9u9808yoihu09"),
+    "name": "Invisibility",
+    "vendor": "kettlecooked",
+    "price": 10.99,
+    "score": 59,
+    "tryDate": new Date (2012, 8, 13),-----reads as sept 13 since js months begin at 0
+    "ingredients": ["newt toes", 42, "laughter"] --we can store any data type within an array
+            }
+
+ MongoDB converts the date to an ISO format which gives us great functionality
+    "expiration": ISODate("2012-09-13T04:00:00Z")
+ 
+ 
+ADDING A POTIONS RATINGS
+
+each potion's ratings will consist of strength and flavor
+
+{"strength": 2,
+"flavor": 5
+}
+
+You can add this to the potion documents like so
+
+ {   "_id": ObjectId("kdh124549u9u9808yoihu09"),
+    "name": "Invisibility",
+    "vendor": "Kettlecooked",
+    "price": 10.99,
+    "score": 59,
+    "tryDate": new Date (2012, 8, 13),-----reads as sept 13 since js months begin at 0
+    "ingredients": ["newt toes", 42, "laughter"], --we can store any data type within an array
+    "ratings": {"strength": 2, "flavor": 5}  ----embedded doc doesn't require id since its child of main doc
+        }
+
+
+To find the document with the flavor rating of 5 you now are searching
+through an embedded document so you would find it as a dot notation as below:
+
+db.potions.find ({"ratings.flavor": 5})
+
+VALIDATIONS SUPPORTED BY MONGODB
+
+Mongo will check that
+
+    No Other document shares same id
+    
+    No syntax errors
+    
+    Document is lesss than 16mb
+    
+        **Make sure data is valid client-side before saving it**
+        
+        
+        
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+
+
