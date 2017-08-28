@@ -5,3 +5,12 @@ db.potions.remove(
 )
 
 which will give us a WriteResult({"nRemoved": 1})
+
+DELETE MULTIPLE DOCUMENTS
+
+db.potions.remove (
+{"vendor": "Kettlecooked"})
+
+will remove all with same vendor or you can do the following to delete them all
+
+remove()
