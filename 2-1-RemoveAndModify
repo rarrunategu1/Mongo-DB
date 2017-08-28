@@ -59,4 +59,35 @@ db.potions.update(
 
 Adding multi allows it to perform the update on all matching documents
 
+RECORDNG POTION VIEWS
+
+Whenever user clicks more info on certain potion we want to created
+log document with the potion name in account so we can store it in the logs collection
+
+Whenever the user clicks we'll update the log document with a count increment by 1
+
+"count": 1
+
+UPDATE A DOCUMENT'S COUNT
+
+db.logs.update(
+{"potion": "Shrinking"},
+{$inc": {"count": 1}})  ----will update by a positive or negative value
+
+if the document doesn't exist you can create it with upsert
+
+db.logs.update(
+{"potion": "Shrinking"},
+{$inc": {"count": 1}},  ----will update by a positive or negative value
+{"upsert": true}
+
+
+
+
+
+
+
+
+
+
 
