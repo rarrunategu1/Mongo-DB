@@ -134,6 +134,35 @@ $mul - Multiplies current field value by specified value.  If empty it inserts 0
 
 See Operator documentation at http://go.codeschool.com/update-operators
 
+ADVANCED MODIFICATIONS
+
+REMOVING THE FIRST OR LAST VALUE OF AN ARRAY
+
+The $pop operator will remove either the first or last value of array
+
+{"$pop": {"categories": 1}}
+
+-1 removes the first element
+1 removes the last element
+
+ADDING VALUES TO END OF AN ARRAY
+
+{"$push": {"categories": "budget"}}
+
+will add budget to the end of array
+
+ADDING UNIQUE VALUES TO AN ARRAY
+
+{"$addToSet": {"categories": "budget"}}
+
+addToSet will add a value to the end of an array 
+unless it's already present.
+
+REMOVING VALUES FROM AN ARRAY
+
+{"$pull": {"categories": "tasty"}} ---removes all instances of tasty
+
+pull will remove any instance of a value from an array
 
 
 
