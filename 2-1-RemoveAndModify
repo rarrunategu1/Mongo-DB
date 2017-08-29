@@ -81,6 +81,91 @@ db.logs.update(
 {$inc": {"count": 1}},  ----will update by a positive or negative value
 {"upsert": true}
 
+ADVANCED MODIFICATIONS
+
+REMOVING FIELDS FROM DOCUMENTS
+
+db.potions.update(
+{}, ---will select all the documents in our potions selection
+{"$unset": {"color": ""}},  ---removed color field
+{"multi": true}
+
+UPDATING  FIELD NAME
+
+db.potions.update(
+{},
+{"$rename": {"score": "grade"}},
+{"multi": true}
+)
+
+DILEMMA OF UPDATING AN ARRAY
+
+db.potions.update(
+{"ingredients": "secret"},
+{"$set": {"ingredients": "42"}}   ---this formula up to here would overwrite the entire array and set it as 42
+
+change it to update that particular array by using dot notation.
+"ingredients": ["hippo", "secret", "mouse feet"]
+It would be ingredients.1
+
+UPDATING VALUES WITHOUT KNOWING POSITION
+You can do this with positional operator
+which is a placeholder that will set the proper position for the value specified in the query parameter 
+
+db.potions.update(
+{"ingredients": "secret"},
+{"$set": {"ingredients.$": 42}}, ---.$ is the positional operator, acts as placeholder  
+{"multi": true}
+
+Positional Operator only applies to the first match per document.
+
+UPDATING EMBEDDED VALUES
+
+Use dot notation
+{"$set": {"ratings.strength": 5}}
+
+USEFUL UPDATE OPERATORS
+
+$max - Updates if new value is greater than the current value or inserts if empty
+
+$min - Updates if new value is less than the current value or inserts if empty
+
+$mul - Multiplies current field value by specified value.  If empty it inserts 0.
+
+See Operator documentation at http://go.codeschool.com/update-operators
+
+ADVANCED MODIFICATIONS
+
+REMOVING THE FIRST OR LAST VALUE OF AN ARRAY
+
+The $pop operator will remove either the first or last value of array
+
+{"$pop": {"categories": 1}}
+
+-1 removes the first element
+1 removes the last element
+
+ADDING VALUES TO END OF AN ARRAY
+
+{"$push": {"categories": "budget"}}
+
+will add budget to the end of array
+
+ADDING UNIQUE VALUES TO AN ARRAY
+
+{"$addToSet": {"categories": "budget"}}
+
+addToSet will add a value to the end of an array 
+unless it's already present.
+
+REMOVING VALUES FROM AN ARRAY
+
+{"$pull": {"categories": "tasty"}} ---removes all instances of tasty
+
+pull will remove any instance of a value from an array
+
+
+
 
 
 
