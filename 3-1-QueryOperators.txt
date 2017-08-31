@@ -1,0 +1,117 @@
+ADDING A FILTER FOR POTIONS
+
+Only show potions made by Kettlecooked with a strength of 5
+
+To do so, we can pass multiple queries through the find method
+
+db.potions.find(
+{"vendor": "Kettlecooked",
+"ratings.strength": 5
+}
+
+FINDING POTIONS BASED ON CONDITIONS
+
+find potion that's less than 20 dollars
+
+Use Comparison Query Operators:
+$gt - greater than
+$gte - greater than or equal to
+$ne - not equal to
+$lt - less than
+$lte - less than or equal to
+
+FINDING POTIONS THAT ARE LESS THAN $20
+
+db.potions.find({"price": {"$lt": 20}})
+
+FINDING POTIONS BETWEEN PRICES
+
+db.potions.find ({"price": {"$gt": 10, "$lt": 20}})
+
+QUERIES OF NON-EQUALITY - use $ne operator to find potions not equal to specified value
+
+db.potions.find ({"vendor": {"$ne": "Brewers"}})
+
+RANGE QUERIES ON AN ARRAY - to only match arrays that have at least one value that matches all criteria.
+
+db.potions.find ({"sizes": {"$elemMatch": {"$gt": 8, "$lt": 16}})
+
+We had to use the elemMatch was because arrays act different with Range Criteria than with normal values
+So when you are running a query on an array use an array query operator
+
+CUSTOMIZING QUERIES
+
+Find potions with a grade greater than or equal to 80
+
+db.potions.find({"grade": {"$gte": 80}}),
+
+If we only want the name and the vendor we'll use a second parameter called projections
+Projections can be used to specify exact field we want back by setting their value to true
+
+db.potions.find({"grade": {"$gte": 80}},
+{"vendor": true, "name": true})
+
+to exclude it set the field to FALSE instead
+
+* EXCLUDING THE _ID - common when preparing data reports for non-developers
+
+"_id": false
+
+ONLY TIME YOU CAN HAVE A TRUE AND FALSE VALUE IN A PROJECTIONS IS 
+WHEN YOU HAVE THE _ID AS THE ONLY DIFFERENCE.
+
+IF YOU SELECT AND EXCLUDE IN THE SAME PROJECTION, YOU'LL GET AN ERROR
+
+
+
+INTRODUCING THE CURSOR
+Whenever we search documents, an object is returned from the find method
+called a cursor object that return the first 20 documents by default
+
+to get more, typing "it" will display the next 20 documents in the cursor
+
+CURSOR METHODS
+
+db.potions.find().count()
+
+find() returns cursor object
+.count() is a method on cursor that returns the count of matching documents
+
+USING THE SORT CURSOR METHOD - used to sort documents
+
+db.potions.find().sort({"price": 1})
+
+value 1 if for ascending
+value -1 if for descending
+
+TO SHOW ONLY 3 POTIONS PER PAGE ON YOUR WEBSITE
+
+use skip and limit cursor methods
+
+db.potions.find().limit(3)   - limits to 3 per page
+
+FOR THE 2ND PAGE TO SHOW THE NEXT 3 USE THE SKIP METHOD
+
+db.potions.find().skip(3).limit(3) - skips 1st three showing on page 1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
