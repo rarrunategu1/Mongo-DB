@@ -1,0 +1,104 @@
+NEED A WAY TO STORE UP TO 3 POTIONS - if user can add up to three on their profile
+
+{"_id": ObjectId(...),
+"username": "Azrius",
+"email": "azrius@example.com",
+"favorites": "Luck"
+}
+
+Adding a favorites field of the user's document with an array of their fave potions
+
+{"_id": ObjectId(...),
+"username": "Azrius",
+"email": "azrius@example.com",
+"favorites": [
+"Newt Tonic",
+"Sleeping",
+"Love"]
+}
+
+ADDING MORE VENDOR INFORMATION FOR USERS TO FINDING
+
+{"_id": ObjectId(...),
+"name": "Invisibility",
+...
+"vendor": {
+"name": "Kettlecooked",
+"phone": 5555555555,
+"organic": true}
+}
+
+*Be cautious about duplicating data because it can be difficult to 
+keep data consistent - this is known as data integrity
+
+DANGER OF DUPLICATION
+*if 1 potion gets updated with new info and the rest don't, our data is no longer correct
+
+Instead of embedding vendor in the potions document we can split it intotwo collections
+
+Potions collection
+Vendor collection
+ - in the potions doc we'll have a vendor id that references the vendor in the vendor's collection
+ 
+potion will say "vendor_id": "Kettlecooked"
+
+vendor will say "_id": "Kettlecooked"
+    vendor names are unique and don't change
+    
+INSERTING REFERENCED DOCUMENTS
+
+db.vendors.insert({
+"_id": "Kettlecooked",
+"phone": 55555555555,
+"organic": true})
+
+
+db.potions.insert({
+"name": "Invisibility",
+"vendor_id": "Kettlecooked"
+...
+})
+
+QUERYING A REFERENCED DOCUMENT
+
+{"_id": ObjectId(...),
+"name": "Invisibility",
+"vendor_id": "Kettlecooked",
+...
+}
+
+You must first query for the potion:
+db.potions.find({"name": "Invisibility"})
+
+Second query to retrieve vendor info
+db.vendors.find({"_id": "Kettlecooked"})
+
+SOME FEATURES OF EMBEDDED DOCUMENTS
+With a single query, we can grab a users email and favorites with a single query
+
+
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
