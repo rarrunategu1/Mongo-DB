@@ -76,11 +76,34 @@ db.vendors.find({"_id": "Kettlecooked"})
 SOME FEATURES OF EMBEDDED DOCUMENTS
 With a single query, we can grab a users email and favorites with a single query
 
+db.users.find({},{"email": true, "favorites": true})
+
+in addition we get atomic rights which means if we update either all the operations
+would happen or nothing would.  
+for ex. if we update a user's email and add a fav potion, but an error occurs
+in the favorites portion of the update, then none of the upates will occur.
+
+REFERENCED DOCUMENTS EXIST INDEPENDENTLY
+
+Now we only have to update our vendor information in one place:
+
+db.vendors.update({"_id": ObjectId(...)}, {...}
+
+unlike embedded documents one factor to consider is that we can't atomically
+write to multiple documents at once.  This is called a transaction in relational 
+databases and mongo does not support that by default.
+ 
+MULTI-DOCUMENT WRITE OPERATIONS
+
+MongoDB doesn't support multi-document writes. 
+Write operations aren't guaranteed on an atomic level so adding a potion and a new vendor
+could result in a successfull write on one and an error on the other
+
+MongoDB doesn't recognize document relationships, so now there would be
+a potion with a vendor id of a vendor that doesn't exist.
 
 
- 
- 
- 
+
  
  
  
