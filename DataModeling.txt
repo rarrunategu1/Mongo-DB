@@ -1,0 +1,162 @@
+NEED A WAY TO STORE UP TO 3 POTIONS - if user can add up to three on their profile
+
+{"_id": ObjectId(...),
+"username": "Azrius",
+"email": "azrius@example.com",
+"favorites": "Luck"
+}
+
+Adding a favorites field of the user's document with an array of their fave potions
+
+{"_id": ObjectId(...),
+"username": "Azrius",
+"email": "azrius@example.com",
+"favorites": [
+"Newt Tonic",
+"Sleeping",
+"Love"]
+}
+
+ADDING MORE VENDOR INFORMATION FOR USERS TO FINDING
+
+{"_id": ObjectId(...),
+"name": "Invisibility",
+...
+"vendor": {
+"name": "Kettlecooked",
+"phone": 5555555555,
+"organic": true}
+}
+
+*Be cautious about duplicating data because it can be difficult to 
+keep data consistent - this is known as data integrity
+
+DANGER OF DUPLICATION
+*if 1 potion gets updated with new info and the rest don't, our data is no longer correct
+
+Instead of embedding vendor in the potions document we can split it intotwo collections
+
+Potions collection
+Vendor collection
+ - in the potions doc we'll have a vendor id that references the vendor in the vendor's collection
+ 
+potion will say "vendor_id": "Kettlecooked"
+
+vendor will say "_id": "Kettlecooked"
+    vendor names are unique and don't change
+    
+INSERTING REFERENCED DOCUMENTS
+
+db.vendors.insert({
+"_id": "Kettlecooked",
+"phone": 55555555555,
+"organic": true})
+
+
+db.potions.insert({
+"name": "Invisibility",
+"vendor_id": "Kettlecooked"
+...
+})
+
+QUERYING A REFERENCED DOCUMENT
+
+{"_id": ObjectId(...),
+"name": "Invisibility",
+"vendor_id": "Kettlecooked",
+...
+}
+
+You must first query for the potion:
+db.potions.find({"name": "Invisibility"})
+
+Second query to retrieve vendor info
+db.vendors.find({"_id": "Kettlecooked"})
+
+SOME FEATURES OF EMBEDDED DOCUMENTS
+With a single query, we can grab a users email and favorites with a single query
+
+db.users.find({},{"email": true, "favorites": true})
+
+in addition we get atomic rights which means if we update either all the operations
+would happen or nothing would.  
+for ex. if we update a user's email and add a fav potion, but an error occurs
+in the favorites portion of the update, then none of the upates will occur.
+
+REFERENCED DOCUMENTS EXIST INDEPENDENTLY
+
+Now we only have to update our vendor information in one place:
+
+db.vendors.update({"_id": ObjectId(...)}, {...}
+
+unlike embedded documents one factor to consider is that we can't atomically
+write to multiple documents at once.  This is called a transaction in relational 
+databases and mongo does not support that by default.
+ 
+MULTI-DOCUMENT WRITE OPERATIONS
+
+MongoDB doesn't support multi-document writes. 
+Write operations aren't guaranteed on an atomic level so adding a potion and a new vendor
+could result in a successfull write on one and an error on the other
+
+MongoDB doesn't recognize document relationships, so now there would be
+a potion with a vendor id of a vendor that doesn't exist.
+
+DATA MODELING DECISIONS
+
+CHOOSING WHICH ROUTE TO TAKE
+consider how our data will be used in order to decide between embedding and referencing
+
+ Embedding
+ -Single Query
+ -Documents accessed through parent
+ -Atomic Writes
+ 
+ Referencing
+ -Require 2 queries
+ -Documents exist independently
+ -Don't support multi-document operations
+ 
+ ALLOWING USERS TO COMMENT ON REVIEWS
+ Adding comments to potions
+ 
+ We will have POTIONS that have COMMENTS and each comments belongs to a USER
+ 
+ *data that is frequently used together will benefit from being embedded
+ *data that's rarely used can afford the cost of referencing
+ 
+ Most of the time embedding is the best option
+ - if you want to display comments with username whenever we display potions
+ embedding is best or you'd have to perform multiple queries to reference.
+ 
+ IF THE SIZE OF THE DATA IS LESS THAN 100 EMBED!
+ IF THE SIZE IS MORE THAN A FEW HUNDRED REFERENCING IS A STRONGER
+ OPTION - YOU COULD SEE A DECLINE IN READ PERFORMANCE IF EMBEDDING
+ 
+Will the data change often?
+
+If so, it's best to use referencing
+if rare, then embedding is fine.
+
+now if it's comments, they don't change often.  Embedding is fine.
+The user however may change their details often.  Referencing would be best
+in this situation as if you embedded, you'd have to update all of the users
+comments with their new information.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
